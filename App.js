@@ -12,7 +12,8 @@ import {
   View
 } from 'react-native';
 
-import {createStackNavigator} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
+import IndexScreen from './src/indexScreen';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -44,6 +45,7 @@ class App extends Component<Props> {
   destroyIntervalAndNavigate = () => {
 
     clearInterval(this.intervalInstance);
+    this.props.navigation.navigate('ComponentsIndex');
 
   }
 
@@ -66,6 +68,9 @@ class App extends Component<Props> {
           <Text> {this.state.redirectTimerSecs} </Text>
           <Text style={styles.redirectTimerText} > secs</Text>
         </View>
+        <Text style={{ fontSize: 12, textAlign: 'center', color: '#818181', marginTop: 5, }}>
+          (This screen is left here intentionally)
+        </Text>
       </View>
     );
   }
@@ -99,24 +104,27 @@ const styles = StyleSheet.create({
 });
 
 
+const defaultNavigationTitleStyle = {
+  fontWeight: 'normal',
+  color: '#B2B2B2',
+};
+
 export default createStackNavigatorInstance = createStackNavigator({
-  // For each screen that you can navigate to, create a new entry like this:
   App: {
-    // `ProfileScreen` is a React component that will be the main content of the screen.
     screen: App,
-    // When `ProfileScreen` is loaded by the StackNavigator, it will be given a `navigation` prop.
-
-    // Optional: When deep linking or using react-navigation in a web app, this path is used:
     path: '/',
-    // The action and route params are extracted from the path.
-
-    // Optional: Override the `navigationOptions` for the screen
     navigationOptions: ({ navigation }) => ({
-      title: `React native components`,
-      headerTitleStyle:{
-        fontWeight:'normal',
-        color:'#B2B2B2',
-      }
+      header: null,
     }),
   },
+  ComponentsIndex: {
+    screen: IndexScreen,
+    path: '/',
+    navigationOptions: ({ navigation }) => ({
+      title: `Components Index`,
+      headerTitleStyle: defaultNavigationTitleStyle,
+    }),
+  },
+},{
+  initialRouteName: 'App',
 });
