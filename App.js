@@ -113,7 +113,10 @@ export default createStackNavigatorInstance = createStackNavigator({
     // Optional: Override the `navigationOptions` for the screen
     navigationOptions: ({ navigation }) => ({
       title: `React native components`,
-      headerTitleStyle:{fontWeight:'normal'}
+      headerTitleStyle:{
+        fontWeight:'normal',
+        color:'#B2B2B2',
+      }
     }),
   },
 });
