@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator,createSwitchNavigator } from 'react-navigation';
 import IndexScreen from './src/indexScreen';
 
 const instructions = Platform.select({
@@ -45,7 +45,7 @@ class App extends Component<Props> {
   destroyIntervalAndNavigate = () => {
 
     clearInterval(this.intervalInstance);
-    this.props.navigation.navigate('ComponentsIndex');
+    this.props.navigation.navigate('Others');
 
   }
 
@@ -109,7 +109,20 @@ const defaultNavigationTitleStyle = {
   color: '#B2B2B2',
 };
 
-export default createStackNavigatorInstance = createStackNavigator({
+const OthersStackNavigatorInstance = createStackNavigator({
+  ComponentsIndex: {
+    screen: IndexScreen,
+    path: '/componentsIndex',
+    navigationOptions: ({ navigation }) => ({
+      title: `Components Index`,
+      headerTitleStyle: defaultNavigationTitleStyle,
+    }),
+  },
+},{
+  initialRouteName: 'ComponentsIndex',
+});
+
+const switchNavigatorInstance = createSwitchNavigator({
   App: {
     screen: App,
     path: '/',
@@ -117,14 +130,9 @@ export default createStackNavigatorInstance = createStackNavigator({
       header: null,
     }),
   },
-  ComponentsIndex: {
-    screen: IndexScreen,
-    path: '/',
-    navigationOptions: ({ navigation }) => ({
-      title: `Components Index`,
-      headerTitleStyle: defaultNavigationTitleStyle,
-    }),
-  },
+  Others:OthersStackNavigatorInstance
 },{
-  initialRouteName: 'App',
-});
+  initialRouteName:'App',
+})
+
+export default switchNavigatorInstance;
