@@ -9,10 +9,13 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  ToastAndroid,
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 
-import { createStackNavigator,createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import IndexScreen from './src/indexScreen';
 
 const instructions = Platform.select({
@@ -25,9 +28,66 @@ const instructions = Platform.select({
 type Props = {};
 class App extends Component<Props> {
 
-  state = { redirectTimerSecs: 10 };
+  state = { redirectTimerSecs: 10, _appSplashState:'notDefined' };
 
   componentDidMount() {
+
+    App.getAppState()
+      .then(response => {
+
+        if(response == 1){
+          this.props.navigation.navigate('Others');
+        }else{
+          this.setState({_appSplashState:0});
+          this.startTimerInterval();
+        }
+
+      }).catch(error=>{
+
+
+
+      });
+      //this.startTimerInterval();
+
+  }
+
+  componentWillUnmount() {
+
+
+
+  }
+
+  saveAppState = async () => {
+
+    try {
+      return await AsyncStorage.setItem('@MySuperStore:_appSplashState', '1');
+    } catch (error) {
+      ToastAndroid.show('Something went wrong! Appstate not saved.', ToastAndroid.SHORT);
+    }
+
+  }
+
+  static getAppState = async () => {
+
+    try {
+      return await AsyncStorage.getItem('@MySuperStore:_appSplashState');
+    } catch (error) {
+    }
+
+  }
+
+  destroyTimerIntervalAndNavigate = () => {
+
+    clearInterval(this.intervalInstance);
+    this.saveAppState()
+    .then(response=>{
+      this.props.navigation.navigate('Others');
+    });
+    
+
+  }
+
+  startTimerInterval() {
 
     this.intervalInstance = setInterval(() => {
 
@@ -36,22 +96,23 @@ class App extends Component<Props> {
 
       this.setState({ redirectTimerSecs: stateTimer });
 
-      if (stateTimer == 0) this.destroyIntervalAndNavigate();
+      if (stateTimer == 0) this.destroyTimerIntervalAndNavigate();
 
     }, 1000);
 
   }
 
-  destroyIntervalAndNavigate = () => {
-
-    clearInterval(this.intervalInstance);
-    this.props.navigation.navigate('Others');
-
-  }
-
   render() {
-    return (
-      <View style={styles.container}>
+
+    appSplashData = (
+      <View style={{flex: 1,justifyContent: 'space-around',padding: 10}} >
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+
+    if(this.state._appSplashState == 0)
+    {
+      appSplashData = (<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -71,8 +132,11 @@ class App extends Component<Props> {
         <Text style={{ fontSize: 12, textAlign: 'center', color: '#818181', marginTop: 5, }}>
           (This screen is left here intentionally)
         </Text>
-      </View>
-    );
+      </View>);
+
+    }
+
+    return (appSplashData);
   }
 }
 
@@ -118,9 +182,9 @@ const OthersStackNavigatorInstance = createStackNavigator({
       headerTitleStyle: defaultNavigationTitleStyle,
     }),
   },
-},{
-  initialRouteName: 'ComponentsIndex',
-});
+}, {
+    initialRouteName: 'ComponentsIndex',
+  });
 
 const switchNavigatorInstance = createSwitchNavigator({
   App: {
@@ -130,9 +194,11 @@ const switchNavigatorInstance = createSwitchNavigator({
       header: null,
     }),
   },
-  Others:OthersStackNavigatorInstance
-},{
-  initialRouteName:'App',
-})
+  Others: OthersStackNavigatorInstance
+}, {
+    initialRouteName: 'App',
+  })
 
-export default switchNavigatorInstance;
+const defaultViewVar = switchNavigatorInstance;
+
+export default defaultViewVar;
