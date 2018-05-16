@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+import {createStackNavigator} from 'react-navigation';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -20,7 +22,7 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
 
   state = { redirectTimerSecs: 10 };
 
@@ -94,4 +96,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20
   }
+});
+
+
+export default createStackNavigatorInstance = createStackNavigator({
+  // For each screen that you can navigate to, create a new entry like this:
+  App: {
+    // `ProfileScreen` is a React component that will be the main content of the screen.
+    screen: App,
+    // When `ProfileScreen` is loaded by the StackNavigator, it will be given a `navigation` prop.
+
+    // Optional: When deep linking or using react-navigation in a web app, this path is used:
+    path: '/',
+    // The action and route params are extracted from the path.
+
+    // Optional: Override the `navigationOptions` for the screen
+    navigationOptions: ({ navigation }) => ({
+      title: `React native components`,
+      headerTitleStyle:{fontWeight:'normal'}
+    }),
+  },
 });
