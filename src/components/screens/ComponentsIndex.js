@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  SectionList,
-  TouchableHighlight
+    Platform,
+    StyleSheet,
+    Text,
+    View,
+    ActivityIndicator,
+    SectionList,
+    TouchableHighlight,
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
@@ -15,7 +18,7 @@ class ComponentsIndex extends Component {
 
     state = {};
 
-    render(){
+    render() {
 
         let SectionComponents = [
             'ActivityIndicator',
@@ -48,27 +51,36 @@ class ComponentsIndex extends Component {
 
         return (
             <View style={styles.baseView} >
-                <View  style={styles.SectionListContainer}  >
+                <View style={styles.SectionListContainer}  >
                     <SectionList
-                    sections={[
-                        { title: 'Components', data: SectionComponents },
-                        { title: 'APIs', data: SectionAPIs },
-                        { title: 'Miscellaneous', data: SectionMiscellaneous },
-                    ]}
-                    renderSectionHeader={ ({section}) => (
-                        <View>
-                            <Text style={styles.SectionHeaderStyle}> { section.title } </Text>
-                        </View>
-                    ) }
-                    renderItem={ ({item}) => (
-                        <TouchableHighlight>
-                            <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}} >
-                            <FontAwesome>{Icons.chevronLeft}</FontAwesome>
-                            { item }
-                            </Text>
-                        </TouchableHighlight>
-                    ) }
-                    keyExtractor={ (item, index) => index }
+                        sections={[
+                            { title: 'Components', data: SectionComponents },
+                            { title: 'APIs', data: SectionAPIs },
+                            { title: 'Miscellaneous', data: SectionMiscellaneous },
+                        ]}
+                        renderSectionHeader={({ section }) => (
+                            <View>
+                                <Text style={styles.SectionHeaderStyle}> {section.title} </Text>
+                            </View>
+                        )}
+                        renderItem={({ item,index }) => {
+                            
+                            let renderItem = (<View style={styles.SectionListItemTouchableHightInnerViewStyle}  >
+                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left' }} >
+                                    {item}
+                                </Text>
+                                <Text style={{ marginRight: 10 }} >
+                                    <FontAwesome>{Icons.chevronRight}</FontAwesome>
+                                </Text>
+                            </View>);
+                            
+                            let renderReturn = ((index%2 == 0)?(<TouchableWithoutFeedback>{renderItem}</TouchableWithoutFeedback>):(<TouchableOpacity>{renderItem}</TouchableOpacity>));
+
+                            return renderReturn;
+
+                        }}
+                        ListEmptyComponent={<Text>No items in under this section</Text>}
+                        keyExtractor={(item, index) => index}
                     />
                 </View>
             </View>
@@ -80,30 +92,35 @@ class ComponentsIndex extends Component {
 
 const styles = StyleSheet.create({
     baseView: {
-        flex:1,
-        backgroundColor:'#fff',
-        alignItems:'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
     },
-    SectionHeaderStyle:{
-        backgroundColor : '#333',
-        fontSize : 18,
+    SectionHeaderStyle: {
+        backgroundColor: '#333',
+        fontSize: 18,
         padding: 5,
         color: '#fff',
     },
-    SectionListItemActiveStyle:{
-        fontSize : 14,
+    SectionListItemActiveStyle: {
+        fontSize: 14,
         padding: 5,
         color: '#333',
-        backgroundColor : '#FFFFFF'
+        backgroundColor: '#FFFFFF'
     },
-    SectionListItemDisabledStyle:{
-        fontSize : 14,
+    SectionListItemDisabledStyle: {
+        fontSize: 14,
         padding: 5,
         color: '#333',
-        backgroundColor : '#F8F8FF'
+        backgroundColor: '#F8F8FF'
     },
-    SectionListContainer:{
-        flexDirection:'row',
+    SectionListItemTouchableHightInnerViewStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    SectionListContainer: {
+        flexDirection: 'row',
     }
 })
 
