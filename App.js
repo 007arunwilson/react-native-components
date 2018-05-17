@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import IndexScreen from './src/indexScreen';
+import ComponentsIndex from './src/components/screens/ComponentsIndex';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -170,12 +170,12 @@ const styles = StyleSheet.create({
 
 const defaultNavigationTitleStyle = {
   fontWeight: 'normal',
-  color: '#B2B2B2',
+  color: '#333',
 };
 
 const OthersStackNavigatorInstance = createStackNavigator({
   ComponentsIndex: {
-    screen: IndexScreen,
+    screen: ComponentsIndex,
     path: '/componentsIndex',
     navigationOptions: ({ navigation }) => ({
       title: `Components Index`,
