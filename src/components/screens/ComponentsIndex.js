@@ -67,7 +67,7 @@ class ComponentsIndex extends Component {
                         renderItem={({ item,index }) => {
                             
                             let renderItem = (<View style={[styles.SectionListItemTouchableHightInnerViewStyle,item.status&&styles.SectionListItemActiveStyle,!item.status&&styles.SectionListItemDisabledStyle]}  >
-                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left', color:'#333' }} >
+                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left', color:'#333', paddingLeft:7 }} >
                                     {item.title}
                                 </Text>
                                 <Text style={{ marginRight: 10 }} >
@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#333',
         fontSize: 18,
         padding: 5,
+        paddingTop: 14,
+        paddingBottom: 14,
         color: '#fff',
     },
     SectionListItemActiveStyle: {
