@@ -21,32 +21,33 @@ class ComponentsIndex extends Component {
     render() {
 
         let SectionComponents = [
-            'ActivityIndicator',
-            'Button',
-            'DrawerLayoutAndroid',
-            'FlatList',
-            'Image',
-            'Modal',
-            'Picker',
-            'ProgressBarAndroid',
-            'Slider'
+            {title:'ActivityIndicator',status:0},
+            {title:'Button',status:0},
+            {title:'DrawerLayoutAndroid',status:0},
+            {title:'FlatList',status:0},
+            {title:'Image',status:0},
+            {title:'Modal',status:0},
+            {title:'Picker',status:0},
+            {title:'ProgressBarAndroid',status:0},
+            {title:'Slider',status:0},
         ];
 
         let SectionAPIs = [
-            'AccessibilityInfo',
-            'ActionSheetIOS',
-            'Alert',
-            'AlertIOS',
-            'Animated',
-            'AppRegistry',
-            'AppState',
+            {title:'AccessibilityInfo',status:0},
+            {title:'Camera Roll',status:1},
+            {title:'ActionSheetIOS',status:0},
+            {title:'Alert',status:0},
+            {title:'AlertIOS',status:0},
+            {title:'Animated',status:0},
+            {title:'AppRegistry',status:0},
+            {title:'AppState',status:0},
         ];
 
         let SectionMiscellaneous = [
-            'Handling Text Input',
-            'Handling Touches',
-            'Using a ScrollView',
-            'Using List Views',
+            {title:'Handling Text Input',status:0},
+            {title:'Handling Touches',status:0},
+            {title:'Using a ScrollView',status:0},
+            {title:'Using List Views',status:0},
         ];
 
         return (
@@ -65,21 +66,20 @@ class ComponentsIndex extends Component {
                         )}
                         renderItem={({ item,index }) => {
                             
-                            let renderItem = (<View style={styles.SectionListItemTouchableHightInnerViewStyle}  >
-                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left' }} >
-                                    {item}
+                            let renderItem = (<View style={[styles.SectionListItemTouchableHightInnerViewStyle,item.status&&styles.SectionListItemActiveStyle,!item.status&&styles.SectionListItemDisabledStyle]}  >
+                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left', color:'#333' }} >
+                                    {item.title}
                                 </Text>
                                 <Text style={{ marginRight: 10 }} >
                                     <FontAwesome>{Icons.chevronRight}</FontAwesome>
                                 </Text>
                             </View>);
                             
-                            let renderReturn = ((index%2 == 0)?(<TouchableWithoutFeedback>{renderItem}</TouchableWithoutFeedback>):(<TouchableOpacity>{renderItem}</TouchableOpacity>));
+                            let renderReturn = ((item.status !== 1)?(<TouchableWithoutFeedback>{renderItem}</TouchableWithoutFeedback>):(<TouchableOpacity>{renderItem}</TouchableOpacity>));
 
                             return renderReturn;
 
                         }}
-                        ListEmptyComponent={<Text>No items in under this section</Text>}
                         keyExtractor={(item, index) => index}
                     />
                 </View>
@@ -103,15 +103,9 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     SectionListItemActiveStyle: {
-        fontSize: 14,
-        padding: 5,
-        color: '#333',
         backgroundColor: '#FFFFFF'
     },
     SectionListItemDisabledStyle: {
-        fontSize: 14,
-        padding: 5,
-        color: '#333',
         backgroundColor: '#F8F8FF'
     },
     SectionListItemTouchableHightInnerViewStyle: {
