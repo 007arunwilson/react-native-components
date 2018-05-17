@@ -5,8 +5,11 @@ import {
   Text,
   View,
   ActivityIndicator,
-  SectionList
+  SectionList,
+  TouchableHighlight
 } from 'react-native';
+
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 class ComponentsIndex extends Component {
 
@@ -52,8 +55,19 @@ class ComponentsIndex extends Component {
                         { title: 'APIs', data: SectionAPIs },
                         { title: 'Miscellaneous', data: SectionMiscellaneous },
                     ]}
-                    renderSectionHeader={ ({section}) => <Text style={styles.SectionHeaderStyle}> { section.title } </Text> }
-                    renderItem={ ({item}) => <Text style={styles.SectionListItemStyle} > { item } </Text> }
+                    renderSectionHeader={ ({section}) => (
+                        <View>
+                            <Text style={styles.SectionHeaderStyle}> { section.title } </Text>
+                        </View>
+                    ) }
+                    renderItem={ ({item}) => (
+                        <TouchableHighlight>
+                            <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}} >
+                            <FontAwesome>{Icons.chevronLeft}</FontAwesome>
+                            { item }
+                            </Text>
+                        </TouchableHighlight>
+                    ) }
                     keyExtractor={ (item, index) => index }
                     />
                 </View>
@@ -76,11 +90,17 @@ const styles = StyleSheet.create({
         padding: 5,
         color: '#fff',
     },
-    SectionListItemStyle:{
+    SectionListItemActiveStyle:{
         fontSize : 14,
         padding: 5,
         color: '#333',
-        backgroundColor : '#F5F5F5'
+        backgroundColor : '#FFFFFF'
+    },
+    SectionListItemDisabledStyle:{
+        fontSize : 14,
+        padding: 5,
+        color: '#333',
+        backgroundColor : '#F8F8FF'
     },
     SectionListContainer:{
         flexDirection:'row',
