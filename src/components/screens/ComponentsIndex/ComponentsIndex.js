@@ -9,7 +9,8 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     TouchableNativeFeedback,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ToastAndroid
 } from 'react-native';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
@@ -17,6 +18,12 @@ import FontAwesome, { Icons } from 'react-native-fontawesome';
 class ComponentsIndex extends Component {
 
     state = {};
+
+    sectionListSelected(item,event) {
+        
+        let screenName = 'Component'+item.screenName;
+        this.props.navigation.navigate('ComponentCameraRoll');
+    }
 
     render() {
 
@@ -34,7 +41,7 @@ class ComponentsIndex extends Component {
 
         let SectionAPIs = [
             {title:'AccessibilityInfo',status:0},
-            {title:'Camera Roll',status:1},
+            {title:'Camera Roll',status:1,screenName:'CameraRoll'},
             {title:'ActionSheetIOS',status:0},
             {title:'Alert',status:0},
             {title:'AlertIOS',status:0},
@@ -67,15 +74,15 @@ class ComponentsIndex extends Component {
                         renderItem={({ item,index }) => {
                             
                             let renderItem = (<View style={[styles.SectionListItemTouchableHightInnerViewStyle,item.status&&styles.SectionListItemActiveStyle,!item.status&&styles.SectionListItemDisabledStyle]}  >
-                                <Text style={{ margin: 10, fontSize: 15, textAlign: 'left', color:'#333', paddingLeft:7 }} >
+                                <Text style={[styles.sectionListItemTextWrapper,!item.status&&styles.SectionListItemDisabledInnterTextStyle]} >
                                     {item.title}
                                 </Text>
-                                <Text style={{ marginRight: 10 }} >
+                                <Text style={styles.sectionListItemFAWIconWrapper} >
                                     <FontAwesome>{Icons.chevronRight}</FontAwesome>
                                 </Text>
                             </View>);
                             
-                            let renderReturn = ((item.status !== 1)?(<TouchableWithoutFeedback>{renderItem}</TouchableWithoutFeedback>):(<TouchableOpacity>{renderItem}</TouchableOpacity>));
+                            let renderReturn = ((item.status !== 1)?(<TouchableWithoutFeedback>{renderItem}</TouchableWithoutFeedback>):(<TouchableOpacity onPress={this.sectionListSelected.bind(this,item)} >{renderItem}</TouchableOpacity>));
 
                             return renderReturn;
 
@@ -110,6 +117,9 @@ const styles = StyleSheet.create({
     SectionListItemDisabledStyle: {
         backgroundColor: '#F8F8FF'
     },
+    SectionListItemDisabledInnterTextStyle: {
+        color: '#A9A9A9'
+    },
     SectionListItemTouchableHightInnerViewStyle: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -117,6 +127,16 @@ const styles = StyleSheet.create({
     },
     SectionListContainer: {
         flexDirection: 'row',
+    },
+    sectionListItemTextWrapper:{
+        margin: 10,
+        fontSize: 15,
+        textAlign: 'left',
+        color:'#333',
+        paddingLeft:7
+    },
+    sectionListItemFAWIconWrapper:{
+        marginRight:10,
     }
 })
 

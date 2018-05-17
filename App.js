@@ -16,7 +16,9 @@ import {
 } from 'react-native';
 
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import ComponentsIndex from './src/components/screens/ComponentsIndex';
+import * as Screens from './src/components/screens/index';
+
+console.log(Screens);
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -175,10 +177,18 @@ const defaultNavigationTitleStyle = {
 
 const OthersStackNavigatorInstance = createStackNavigator({
   ComponentsIndex: {
-    screen: ComponentsIndex,
+    screen: Screens.ComponentIndex,
     path: '/componentsIndex',
     navigationOptions: ({ navigation }) => ({
       title: `Components Index`,
+      headerTitleStyle: defaultNavigationTitleStyle,
+    }),
+  },
+  ComponentCameraRoll: {
+    screen: Screens.CameraRoll,
+    path: '/components/cameraroll',
+    navigationOptions: ({ navigation }) => ({
+      title: `Component - Camera Roll`,
       headerTitleStyle: defaultNavigationTitleStyle,
     }),
   },
