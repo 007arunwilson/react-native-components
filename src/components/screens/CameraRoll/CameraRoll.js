@@ -30,21 +30,16 @@ class CameraRollComponent extends Component {
     render() {
         return (
                 <View style={styles.container}>
-                  <Button
+                  {!this.state.modalVisible?<Button
                     title='View Photos'
                     onPress={() => { this.toggleModal(),this.getCameraRollPhotos() }}
-                  />
+                  />:null}
                   <Modal
                     animationType={"slide"}
-                    transparent={false}
                     visible={this.state.modalVisible}
                     onRequestClose={() => console.log('closed')}
                   >
                     <View style={styles.modalContainer}>
-                      <Button
-                        title='Close'
-                        onPress={this.toggleModal}
-                      />
                       <ScrollView
                         contentContainerStyle={styles.scrollView}>
                         {
@@ -59,7 +54,9 @@ class CameraRollComponent extends Component {
                                 <Image
                                   style={{
                                     width: width/3,
-                                    height: width/3
+                                    height: width/3,
+                                    borderWidth: 1,
+                                    borderColor: '#fff',
                                   }}
                                   source={{uri: p.node.image.uri}}
                                 />
@@ -68,6 +65,10 @@ class CameraRollComponent extends Component {
                           })
                         }
                       </ScrollView>
+                      <Button
+                        title='Close'
+                        onPress={this.toggleModal}
+                      />
                       {
                         this.state.index !== null  && (
                           <View style={styles.shareButton}>
@@ -93,7 +94,7 @@ class CameraRollComponent extends Component {
         //this.setState({ json:'louis' })
 
         CameraRoll.getPhotos({
-            first: 20,
+            first: 1000,
             assetType: 'All'
         })
         .then(r => {
