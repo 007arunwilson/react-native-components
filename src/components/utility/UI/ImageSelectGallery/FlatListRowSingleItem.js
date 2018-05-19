@@ -5,9 +5,9 @@ import { View, TouchableOpacity, Image } from "react-native";
 export default class FlatListRowSingleItem extends React.Component {
   render() {
     return (
-      <View styles={styles}>
+      <View >
         <TouchableOpacity onPress={this.onItemPressHandler}>
-          <Image source={{ uri: this.props.item.url }} />
+          <Image style={{width:this.props.dimensionWidth/3,height:this.props.dimensionWidth/3}} source={{ uri: this.props.item.url }} />
         </TouchableOpacity>
       </View>
     );

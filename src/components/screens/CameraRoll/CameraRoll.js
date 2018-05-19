@@ -80,7 +80,7 @@ class CameraRollComponent extends Component {
           }
           renderItem={({ item }) => {
             return (
-              <View>
+              <View style={{flex:1}} >
                 <GalleryListItemRow dimensionWidth={width} data={item} />
               </View>
             );
