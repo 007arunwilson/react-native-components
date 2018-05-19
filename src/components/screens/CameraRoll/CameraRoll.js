@@ -25,87 +25,15 @@ const { width } = Dimensions.get('window');
 
 class CameraRollComponent extends Component {
 
-    state = {modalVisible: false,photos: [],index: null};
+    //state = {modalVisible: false,photos: [],index: null};
+    state = {};
 
     render() {
         return (
                 <View style={styles.container}>
-                  {!this.state.modalVisible?<Button
-                    title='View Photos'
-                    onPress={() => { this.toggleModal(),this.getCameraRollPhotos() }}
-                  />:null}
-                  <Modal
-                    animationType={"slide"}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => console.log('closed')}
-                  >
-                    <View style={styles.modalContainer}>
-                      <ScrollView
-                        contentContainerStyle={styles.scrollView}>
-                        {
-                          this.state.photos.map((p, i) => {
-                            return (
-                              <TouchableHighlight
-                                style={{opacity: i === this.state.index ? 0.5 : 1}}
-                                key={i}
-                                underlayColor='transparent'
-                                onPress={() => this.setIndex(i)}
-                              >
-                                <Image
-                                  style={{
-                                    width: width/3,
-                                    height: width/3,
-                                    borderWidth: 1,
-                                    borderColor: '#fff',
-                                  }}
-                                  source={{uri: p.node.image.uri}}
-                                />
-                              </TouchableHighlight>
-                            )
-                          })
-                        }
-                      </ScrollView>
-                      <Button
-                        title='Close'
-                        onPress={this.toggleModal}
-                      />
-                      {
-                        this.state.index !== null  && (
-                          <View style={styles.shareButton}>
-                            <Button
-                                title='Share'
-                                onPress={this.share}
-                              />
-                          </View>
-                        )
-                      }
-                    </View>
-                  </Modal>
-                </View>          
+                </View>
         );
     }
-
-    toggleModal = () => {
-        this.setState({ modalVisible: !this.state.modalVisible });
-    }
-
-    getCameraRollPhotos() {
-
-        //this.setState({ json:'louis' })
-
-        CameraRoll.getPhotos({
-            first: 1000,
-            assetType: 'All'
-        })
-        .then(r => {
-
-            let jsonStringified = JSON.stringify(r.edges);
-            this.setState({ photos: r.edges })
-            
-        });
-
-    }
-
 }
 
 const styles = StyleSheet.create({
