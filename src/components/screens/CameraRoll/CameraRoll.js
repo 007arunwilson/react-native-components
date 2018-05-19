@@ -23,6 +23,7 @@ import {
 import axiosInstance from "axios";
 import FontAwesome, { Icons } from "react-native-fontawesome";
 import index from "react-native-safe-area-view";
+import GalleryListItemRow from '../../utility/UI/ImageSelectGallery/FlatListRowItem';
 
 const { width } = Dimensions.get("window");
 
@@ -55,13 +56,28 @@ class CameraRollComponent extends Component {
   }
 
   render() {
-    let pre_format_data = this.state.data;
-    let post_format_data = pre_format_data;
+    let pre_format_data_array = this.state.data;
+
+    let final_result_array = [];
+    
+    if(pre_format_data_array.length)
+    {
+
+      for (let i = 0;pre_format_data_array.length;){
+        
+        const spliced_result = pre_format_data_array.splice(0,3);
+        final_result_array.push(spliced_result);
+
+      }
+
+    }
+
+    let post_format_data = final_result_array;
 
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.data}
+          data={post_format_data}
           keyExtractor={(item, index) => index}
           ListEmptyComponent={
             <View style={{ paddingTop: 20 }}>
@@ -74,25 +90,18 @@ class CameraRollComponent extends Component {
                   shadowColor: "#000",
                   shadowOffset: { width: 2, height: 2 }
                 }}
-                elevation={5}
                 size={40}
               />
             </View>
           }
           renderItem={({ item }) => {
 
-            let width_divident = (width/3);
             return (
               <View>
-                <TouchableOpacity
-                  onPress={()=>{
-
-                    ToastAndroid.show(`${item.url}`,ToastAndroid.SHORT);
-                    
-                  }}
-                >
-                  <Image source={{uri:item.url}} style={{width:width_divident,height:width_divident}}  />
-                  </TouchableOpacity>
+                <GalleryListItemRow 
+                dimensionWidth={width}
+                data={post_format_data}
+                />
               </View>
             );
           }}
