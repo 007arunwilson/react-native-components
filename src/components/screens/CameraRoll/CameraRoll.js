@@ -23,7 +23,7 @@ import {
 import axiosInstance from "axios";
 import FontAwesome, { Icons } from "react-native-fontawesome";
 import index from "react-native-safe-area-view";
-import GalleryListItemRow from '../../utility/UI/ImageSelectGallery/FlatListRowItem';
+import GalleryListItemRow from "../../utility/UI/ImageSelectGallery/FlatListRowItem";
 
 const { width } = Dimensions.get("window");
 
@@ -34,42 +34,26 @@ class CameraRollComponent extends Component {
   };
 
   componentDidMount() {
-
-    axiosInstance.get('https://jsonplaceholder.typicode.com/photos')
-    .then(response=>{
-      
-      ToastAndroid.show(` Total response length ${response.data.length} `,ToastAndroid.SHORT);
-
-      if(response.data.length)
-      {
-          this.setState({data:response.data});
-      }
-
-
-    })
-    .catch(error=>{
-
-
-
-    });
-
+    axiosInstance
+      .get("https://jsonplaceholder.typicode.com/photos")
+      .then(response => {
+        if (response.data.length) {
+          this.setState({ data: response.data });
+        }
+      })
+      .catch(error => {});
   }
 
   render() {
     let pre_format_data_array = this.state.data;
 
     let final_result_array = [];
-    
-    if(pre_format_data_array.length)
-    {
 
-      for (let i = 0;pre_format_data_array.length;){
-        
-        const spliced_result = pre_format_data_array.splice(0,3);
+    if (pre_format_data_array.length) {
+      for (let i = 0; pre_format_data_array.length; ) {
+        const spliced_result = pre_format_data_array.splice(0, 3);
         final_result_array.push(spliced_result);
-
       }
-
     }
 
     let post_format_data = final_result_array;
@@ -95,13 +79,9 @@ class CameraRollComponent extends Component {
             </View>
           }
           renderItem={({ item }) => {
-
             return (
               <View>
-                <GalleryListItemRow 
-                dimensionWidth={width}
-                data={post_format_data}
-                />
+                <GalleryListItemRow dimensionWidth={width} data={item} />
               </View>
             );
           }}
