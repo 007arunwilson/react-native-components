@@ -7,7 +7,7 @@ export default class FlatListRowSingleItem extends React.Component {
     return (
       <View >
         <TouchableOpacity onPress={this.onItemPressHandler}>
-          <Image style={{width:this.props.dimensionWidth/3,height:this.props.dimensionWidth/3}} source={{ uri: this.props.item.url }} />
+          <Image style={{width:this.props.dimensionWidth/3,height:this.props.dimensionWidth/3}} source={{ uri: this.props.item.node.image.uri }} />
         </TouchableOpacity>
       </View>
     );
