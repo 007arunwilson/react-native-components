@@ -86,7 +86,7 @@ class CameraRollComponent extends Component {
             </View>
           }
           renderItem={({ item }) => {
-            return <GalleryListItemRow dimensionWidth={width} data={item} />;
+            return <GalleryListItemRow updateSelectionNumberHandler={this.updateSelectionNumberHandler.bind(this)} dimensionWidth={width} data={item} />;
           }}
         />
       </View>
@@ -125,7 +125,17 @@ class CameraRollComponent extends Component {
 
     this.getCameraRollPhotos(end_cursor);
   }
+
+  updateSelectionNumberHandler() {
+  
+    console.log('Update selection Handler');
+    console.log(this.state);
+  
+  }
+
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

@@ -20,8 +20,8 @@ export default class FlatListRowSingleItem extends React.Component {
       styleObject = {
         width: (this.props.dimensionWidth / 3) - 2,
         height: (this.props.dimensionWidth / 3) - 2,
-        borderColor:'#333',
-        borderWidth:4,
+        borderColor:'#4191f0',
+        borderWidth:5,
       };
     }
 
@@ -44,6 +44,7 @@ export default class FlatListRowSingleItem extends React.Component {
     let selected_current = state_obj.selected;
     let selected_new = !selected_current;
     this.setState({selected:selected_new});
+    this.props.updateSelectionNumberHandler(selected_new);
 
   }
 

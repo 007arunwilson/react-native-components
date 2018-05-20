@@ -12,14 +12,14 @@ export default class FlatListRowItem extends React.PureComponent {
     const data = this.props.data;
 
     const image_0_template = data[0] ? (
-      <SingleItem dimensionWidth={this.props.dimensionWidth} item={data[0]} />
+      <SingleItem updateSelectionNumberHandler={this.props.updateSelectionNumberHandler} dimensionWidth={this.props.dimensionWidth} item={data[0]} />
     ) : null;
     const image_1_template = data[1] ? (
-      <SingleItem dimensionWidth={this.props.dimensionWidth} item={data[1]} />
+      <SingleItem updateSelectionNumberHandler={this.props.updateSelectionNumberHandler} dimensionWidth={this.props.dimensionWidth} item={data[1]} />
     ) : null;
     const image_2_template = data[2] ? (
-      <SingleItem dimensionWidth={this.props.dimensionWidth} item={data[2]} />
-    ) : null;
+      <SingleItem updateSelectionNumberHandler={this.props.updateSelectionNumberHandler} dimensionWidth={this.props.dimensionWidth} item={data[2]} />
+    ) : null; 
 
     return (
       <View style={{flex:1,flexDirection:'row'}} >
