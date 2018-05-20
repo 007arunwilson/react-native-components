@@ -36,17 +36,10 @@ class CameraRollComponent extends Component {
     is_footer_loading: false
   };
 
+  lastFetchCursor = "";
+
   componentDidMount() {
     this.getCameraRollPhotos();
-
-    // axiosInstance
-    //   .get("https://jsonplaceholder.typicode.com/photos")
-    //   .then(response => {
-    //     if (response.data.length) {
-    //       this.setState({ data: response.data });
-    //     }
-    //   })
-    //   .catch(error => {});
   }
 
   render() {
@@ -63,18 +56,14 @@ class CameraRollComponent extends Component {
 
     let post_format_data = final_result_array;
 
-    console.log("On render ", post_format_data);
-
     return (
       <View style={styles.container}>
         <FlatList
           data={post_format_data} //extraData={this.state}
-          keyExtractor={(item, index) => index}
-          onEndReachedThreshold={1}
+          keyExtractor={(item, index) => ''+index}
+          onEndReachedThreshold={2}
           onEndReached={this.scrollEndReachHandler.bind(this)}
           ListFooterComponent={() => {
-            console.log("On Footer ListFooterComponent ");
-
             return this.state.is_footer_loading ? (
               <View style={{ padding: 10 }}>
                 <ActivityIndicator size={30} color="#000" />
@@ -105,34 +94,37 @@ class CameraRollComponent extends Component {
   }
 
   getCameraRollPhotos(after_cursor_parameter) {
-
-    this.onFetchCursor.push(''+after_cursor_parameter);
+    this.lastFetchCursor = after_cursor_parameter;
 
     CameraRoll.getPhotos({
-      first: 60,
+      first: 30,
       assetType: "Photos",
-      after:after_cursor_parameter
+      after: after_cursor_parameter
     }).then(r => {
-      this.setState(state => {
 
+
+      this.setState(state => {
         let new_data_concated = [...state.data].concat(r.edges);
-        return { ...state, data: new_data_concated, page_info: r.page_info,is_footer_loading:false };
+        return {
+          ...state,
+          data: new_data_concated,
+          page_info: r.page_info,
+          is_footer_loading: false
+        };
       });
     });
   }
 
-  scrollEndReachHandler(){
+  scrollEndReachHandler() {
+    let end_cursor =
+      this.state.page_info && this.state.page_info.end_cursor
+        ? this.state.page_info.end_cursor
+        : undefined;
+    console.log(this.lastFetchCursor, end_cursor);
+    if (this.lastFetchCursor === end_cursor) return;
 
-    this.setState(state => {
-      return { ...state, is_footer_loading:true };
-    });
-
-    let end_cursor = (this.onFetchCursor.indexOf(''+this.state.page_info.end_cursor)===-1&&this.state.page_info && this.state.page_info.end_cursor?this.state.page_info.end_cursor:undefined;
     this.getCameraRollPhotos(end_cursor);
-
   }
-
-
 }
 
 const styles = StyleSheet.create({
