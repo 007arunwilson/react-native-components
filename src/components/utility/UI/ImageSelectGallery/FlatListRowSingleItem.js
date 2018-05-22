@@ -7,8 +7,6 @@ export default class FlatListRowSingleItem extends React.Component {
   state = { selected: false };
 
   render() {
-    
-    console.log('[render]',this.state.selected);
 
     let styleObject = {
       width: (this.props.dimensionWidth / 3) - 2,
@@ -43,8 +41,20 @@ export default class FlatListRowSingleItem extends React.Component {
     let state_obj = {...this.state};
     let selected_current = state_obj.selected;
     let selected_new = !selected_current;
-    this.setState({selected:selected_new});
-    this.props.updateSelectionNumberHandler(selected_new);
+    this.props.updateSelectionNumberHandler(selected_new, this.props.item)
+    .then(({selection_status,count_of_selected})=>{
+      
+        this.setState(state=>{
+
+          let state_immutable = {...state};
+          state_immutable.count = count_of_selected;
+          state_immutable.selected = selection_status;
+
+          return state_immutable;
+
+        });
+
+    });
 
   }
 

@@ -33,7 +33,11 @@ class CameraRollComponent extends Component {
   onFetchCursor = [];
   state = {
     data: [],
-    is_footer_loading: false
+    is_footer_loading: false,
+    selected_objects: {
+      byId: [],
+      byIndex: []
+    }
   };
 
   lastFetchCursor = "";
@@ -60,7 +64,7 @@ class CameraRollComponent extends Component {
       <View style={styles.container}>
         <FlatList
           data={post_format_data} //extraData={this.state}
-          keyExtractor={(item, index) => ''+index}
+          keyExtractor={(item, index) => "" + index}
           onEndReachedThreshold={2}
           onEndReached={this.scrollEndReachHandler.bind(this)}
           ListFooterComponent={() => {
@@ -86,7 +90,15 @@ class CameraRollComponent extends Component {
             </View>
           }
           renderItem={({ item }) => {
-            return <GalleryListItemRow updateSelectionNumberHandler={this.updateSelectionNumberHandler.bind(this)} dimensionWidth={width} data={item} />;
+            return (
+              <GalleryListItemRow
+                updateSelectionNumberHandler={this.updateSelectionNumberHandler.bind(
+                  this
+                )}
+                dimensionWidth={width}
+                data={item}
+              />
+            );
           }}
         />
       </View>
@@ -101,8 +113,6 @@ class CameraRollComponent extends Component {
       assetType: "Photos",
       after: after_cursor_parameter
     }).then(r => {
-
-
       this.setState(state => {
         let new_data_concated = [...state.data].concat(r.edges);
         return {
@@ -126,16 +136,45 @@ class CameraRollComponent extends Component {
     this.getCameraRollPhotos(end_cursor);
   }
 
-  updateSelectionNumberHandler() {
-  
-    console.log('Update selection Handler');
-    console.log(this.state);
-  
+  updateSelectionNumberHandler(selection_status, item_data) {
+    console.log("Update selection Handler");
+    console.log(selection_status, item_data);
+
+    const promiseObject = new Promise((resolve, reject) => {
+      let selected_objects = { ...this.state.selected_objects };
+      const index_of_item = selected_objects.byId.indexOf(
+        item_data.node.image.uri
+      );
+      if (index_of_item === -1 && selection_status) {
+        selected_objects.byId.push(item_data.node.image.uri);
+
+        const selected_item_object = {
+          uri: item_data.node.image.uri,
+          type: item_data.node.type
+        };
+
+        selected_objects.byIndex.push(selected_item_object);
+      } else if (!selection_status && index_of_item >= 0) {
+        selected_objects.byIndex.splice(index_of_item, 1);
+      }
+
+      let state_immutable = null;
+      this.setState(state => {
+        state_immutable = { ...state };
+        state_immutable.selected_objects = selected_objects;
+        console.log('length outside : ',state_immutable.selected_objects.byId.length);
+        let count_of_selected = state_immutable.selected_objects.byId.length;
+        resolve({selection_status,count_of_selected});
+        return state_immutable;
+      });
+
+    });
+
+    //setTimeout(promiseObject.resolve,1000);
+
+    return promiseObject;
   }
-
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
