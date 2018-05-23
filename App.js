@@ -15,7 +15,7 @@ import {
   ActivityIndicator
 } from "react-native";
 
-import { Scene, Router, Actions } from "react-native-router-flux";
+import { Scene, Router, Actions, ActionConst } from "react-native-router-flux";
 import * as Screens from "./src/components/screens/index";
 
 console.log(Screens);
@@ -155,11 +155,11 @@ const RouterComponent = () => {
 
   return (<Router>
       <Scene key="root" hideNavBar >
-        <Scene key="appParent" initial>
+        <Scene type={ActionConst.RESET} key="appParent" initial>
           <Scene key ="app" component={App} initial hideNavBar />
         </Scene>
-        <Scene key="componentsParent" >
-          <Scene key="components" component={Screens.ComponentIndex} title="Components Index" />
+        <Scene type={ActionConst.RESET} key="componentsParent" >
+          <Scene key="components" component={Screens.ComponentIndex} titleStyle={defaultNavigationTitleStyle} title="Components Index" />
         </Scene>
       </Scene>
     </Router>);
