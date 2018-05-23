@@ -7,7 +7,7 @@ const navigation2 =()=> {
        <View>
            <Text>You are on page 2</Text>
            <Button
-               onPress={() => Actions.firstParent()}
+               onPress={() => Actions.reset('firstParent')}
                title="Learn More"
                color="#841584"
                accessibilityLabel="Learn more about this purple button"
