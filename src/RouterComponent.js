@@ -7,7 +7,7 @@ const RouterComponent = () => {
   return (
     <Router>
       <Scene key="root" hideNavBar>
-        <Scene key="firstParent" initial>
+        <Scene type={ActionConst.RESET} key="firstParent" initial>
           <Scene
             key="firstpage"
             component={navigation1}
@@ -16,7 +16,7 @@ const RouterComponent = () => {
           />
         </Scene>
 
-        <Scene key="secondParent">
+        <Scene type={ActionConst.RESET} key="secondParent">
           <Scene direction="leftToRight"  key="secondpage" component={navigation2} title="secondpage" />
         </Scene>
       </Scene>
