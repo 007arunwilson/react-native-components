@@ -37,7 +37,8 @@ class CameraRollComponent extends Component {
     selected_objects: {
       byId: [],
       byIndex: []
-    }
+    },
+    uploadable:false,
   };
 
   lastFetchCursor = "";
@@ -61,7 +62,7 @@ class CameraRollComponent extends Component {
     let post_format_data = final_result_array;
 
     return (
-      <View style={styles.container}>
+      <View  style={styles.container}>
         <FlatList
           data={post_format_data} //extraData={this.state}
           keyExtractor={(item, index) => "" + index}
@@ -101,6 +102,11 @@ class CameraRollComponent extends Component {
             );
           }}
         />
+        {this.state.uploadable?(
+          <View style={styles.uploadButtonContainer} >
+            <Button style={styles.uploadButton} onPress={()=>true} title={`Upload Images (${this.state.selected_objects.byId.length})`}  />
+          </View>
+        ):null}
       </View>
     );
   }
@@ -155,7 +161,7 @@ class CameraRollComponent extends Component {
 
         selected_objects.byIndex.push(selected_item_object);
       } else if (!selection_status && index_of_item >= 0) {
-        selected_objects.byIndex.splice(index_of_item, 1);
+        selected_objects.byId.splice(index_of_item, 1);
       }
 
       let state_immutable = null;
@@ -164,6 +170,7 @@ class CameraRollComponent extends Component {
         state_immutable.selected_objects = selected_objects;
         console.log('length outside : ',state_immutable.selected_objects.byId.length);
         let count_of_selected = state_immutable.selected_objects.byId.length;
+        state_immutable.uploadable = !!count_of_selected;
         resolve({selection_status,count_of_selected});
         return state_immutable;
       });
@@ -178,9 +185,9 @@ class CameraRollComponent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    alignItems:"center",
+    justifyContent:"center",
+    flex:1,
   },
   modalContainer: {
     paddingTop: 20,
@@ -196,6 +203,13 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 0,
     left: 0
+  },
+  uploadButton:{
+  },
+  uploadButtonContainer:{
+    position:"absolute",
+    bottom:0,
+    right:0,
   }
 });
 
