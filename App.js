@@ -15,7 +15,7 @@ import {
   ActivityIndicator
 } from "react-native";
 
-import { createStackNavigator, createSwitchNavigator } from "react-navigation";
+import { Scene, Router, Actions } from "react-native-router-flux";
 import * as Screens from "./src/components/screens/index";
 
 console.log(Screens);
@@ -34,7 +34,7 @@ class App extends Component {
     App.getAppState()
       .then(response => {
         if (response == 1) {
-          this.props.navigation.navigate("Others");
+          Actions.componentsParent();
         } else {
           this.setState({ _appSplashState: 0 });
           this.startTimerInterval();
@@ -66,7 +66,7 @@ class App extends Component {
   destroyTimerIntervalAndNavigate = () => {
     clearInterval(this.intervalInstance);
     this.saveAppState().then(response => {
-      this.props.navigation.navigate("Others");
+      Actions.componentsParent();
     });
   };
 
@@ -151,46 +151,18 @@ const defaultNavigationTitleStyle = {
   color: "#333"
 };
 
-const OthersStackNavigatorInstance = createStackNavigator(
-  {
-    ComponentsIndex: {
-      screen: Screens.ComponentIndex,
-      path: "/componentsIndex",
-      navigationOptions: ({ navigation }) => ({
-        title: `Components Index`,
-        headerTitleStyle: defaultNavigationTitleStyle
-      })
-    },
-    ComponentCameraRoll: {
-      screen: Screens.CameraRoll,
-      path: "/components/cameraroll",
-      navigationOptions: ({ navigation }) => ({
-        title: `Component - Camera Roll`,
-        headerTitleStyle: defaultNavigationTitleStyle
-      })
-    }
-  },
-  {
-    initialRouteName: "ComponentsIndex"
-  }
-);
+const RouterComponent = () => {
 
-const switchNavigatorInstance = createSwitchNavigator(
-  {
-    App: {
-      screen: App,
-      path: "/",
-      navigationOptions: ({ navigation }) => ({
-        header: null
-      })
-    },
-    Others: OthersStackNavigatorInstance
-  },
-  {
-    initialRouteName: "App"
-  }
-);
+  return (<Router>
+      <Scene key="root" hideNavBar >
+        <Scene key="appParent" initial>
+          <Scene key ="app" component={App} initial hideNavBar />
+        </Scene>
+        <Scene key="componentsParent" >
+          <Scene key="components" component={Screens.ComponentIndex} title="Components Index" />
+        </Scene>
+      </Scene>
+    </Router>);
+}
 
-const defaultViewVar = switchNavigatorInstance;
-
-export default defaultViewVar;
+export default RouterComponent;
